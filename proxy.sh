@@ -186,6 +186,16 @@ async function main() {
   console.log("Decoded response:", contract.interface.decodeFunctionResult(functionName, responseMessage)[0]);
 }
 
+try {
+    await hre.run("verify:verify", {
+      address: contract.target,
+      constructorArguments: [JAN_1ST_2030],
+    });
+    console.log("Contract verified to", hre.config.etherscan.customChains[0].urls.browserURL + "/address/" + contract.target);
+  } catch (err) {
+    console.error("Error veryfing Contract. Reason:", err);
+  }
+
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
